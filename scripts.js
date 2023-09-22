@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 ctx.fillStyle = '#CCCCCC';  
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-let isDrawing = true;
+let isDrawing = false;
 
 canvas.addEventListener('mousedown', () => {
     isDrawing = true;
@@ -67,4 +67,22 @@ function startFireworks() {
 }
 
 canvas.addEventListener('mouseup', checkCanvasCleared);
+
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault(); // Empêche le comportement tactile par défaut, comme le défilement
+    isDrawing = true;
+});
+
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    isDrawing = false;
+    ctx.beginPath();
+    checkCanvasCleared();  // vérifie si le canvas est complètement gratté
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    draw({clientX: touch.clientX, clientY: touch.clientY});
+});
 
