@@ -1,7 +1,7 @@
 const canvas = document.getElementById('grattage');
 const ctx = canvas.getContext('2d');
 
-// Ajout de la couleur de remplissage initiale
+// Remplissage initial du canvas avec une couleur grise
 ctx.fillStyle = '#CCCCCC';  
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -14,42 +14,57 @@ canvas.addEventListener('mousedown', () => {
 canvas.addEventListener('mouseup', () => {
     isDrawing = false;
     ctx.beginPath();
+    checkCanvasCleared();
 });
 
 canvas.addEventListener('mousemove', draw);
 
-function draw(event) {
-    if (!isDrawing) return;
-    ctx.lineWidth = 80;
-    ctx.lineCap = 'round';
-    ctx.globalCompositeOperation = 'destination-out';
+canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    isDrawing = true;
+});
 
-    ctx.lineTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+canvas.addEventListener('touchend', (e) => {
+    e.preventDefault();
+    isDrawing = false;
+    ctx.beginPath();
+    checkCanvasCleared();
+});
+
+canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();
+    const touch = e.touches[0];
+    draw({clientX: touch.clientX, clientY: touch.clientY});
+});
+
+function draw(e) {
+    if (!isDrawing) return;
+    ctx.lineWidth = 30;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = 'white';
+
+    ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
     ctx.stroke();
     ctx.beginPath();
-    ctx.moveTo(event.clientX - canvas.offsetLeft, event.clientY - canvas.offsetTop);
+    ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
 }
 
 function checkCanvasCleared() {
-    
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     let transparencyCount = 0;
 
     for (let i = 0; i < imageData.data.length; i += 4) {
-        if (imageData.data[i + 3] === 0) transparencyCount++; // vérifie la transparence
+        if (imageData.data[i + 3] === 0) transparencyCount++;
     }
 
     const clearedPercentage = (transparencyCount / (canvas.width * canvas.height)) * 100;
-    console.log("Pourcentage gratté: ", clearedPercentage);
 
-    if (clearedPercentage > 10) { // Si plus de 90% du canvas est gratté
+    if (clearedPercentage > 90) {
         startFireworks();
     }
 }
 
 function startFireworks() {
-    console.log("Feux d'artifice déclenchés!");
-
     const fireworks = new Fireworks({
         target: document.body,
         hue: 120,
@@ -65,24 +80,3 @@ function startFireworks() {
     });
     fireworks.start();
 }
-
-canvas.addEventListener('mouseup', checkCanvasCleared);
-
-canvas.addEventListener('touchstart', (e) => {
-    e.preventDefault(); // Empêche le comportement tactile par défaut, comme le défilement
-    isDrawing = true;
-});
-
-canvas.addEventListener('touchend', (e) => {
-    e.preventDefault();
-    isDrawing = false;
-    ctx.beginPath();
-    checkCanvasCleared();  // vérifie si le canvas est complètement gratté
-});
-
-canvas.addEventListener('touchmove', (e) => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    draw({clientX: touch.clientX, clientY: touch.clientY});
-});
-
