@@ -1,0 +1,22 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+}
+
+.block {
+    margin: 20px 0;
+    text-align: center;
+}
+
+canvas#grattage {
+    background-image: url('image.png'); /* Remplacez par le chemin de votre image */
+    cursor: crosshair;
+}
+
+
