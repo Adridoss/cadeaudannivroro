@@ -5,7 +5,7 @@ const ctx = canvas.getContext('2d');
 ctx.fillStyle = '#CCCCCC';  
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-let isDrawing = false;
+let isDrawing = true;
 
 canvas.addEventListener('mousedown', () => {
     isDrawing = true;
