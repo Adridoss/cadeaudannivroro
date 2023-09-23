@@ -14,7 +14,7 @@ body {
     text-align: center;
 }
 
-canvas#grattage {
+canvas#Ekip {
     background-image: url('image.png'); /* Remplacez par le chemin de votre image */
     cursor: crosshair;
 }
