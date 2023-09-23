@@ -39,9 +39,9 @@ canvas.addEventListener('touchmove', (e) => {
 
 function draw(e) {
     if (!isDrawing) return;
-    ctx.lineWidth = 30;
+ ctx.lineWidth = 80;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = 'white';
+    ctx.globalCompositeOperation = 'destination-out';
 
     ctx.lineTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
     ctx.stroke();
