@@ -1,4 +1,4 @@
-const canvas = document.getElementById('grattage');
+const canvas = document.getElementById('Ekip');
 const ctx = canvas.getContext('2d');
 
 // Remplissage initial du canvas avec une couleur grise
