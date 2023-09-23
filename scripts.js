@@ -49,34 +49,3 @@ function draw(e) {
     ctx.moveTo(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop);
 }
 
-function checkCanvasCleared() {
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    let transparencyCount = 0;
-
-    for (let i = 0; i < imageData.data.length; i += 4) {
-        if (imageData.data[i + 3] === 0) transparencyCount++;
-    }
-
-    const clearedPercentage = (transparencyCount / (canvas.width * canvas.height)) * 100;
-
-    if (clearedPercentage > 90) {
-        startFireworks();
-    }
-}
-
-function startFireworks() {
-    const fireworks = new Fireworks({
-        target: document.body,
-        hue: 120,
-        startDelay: 1,
-        speed: 4,
-        acceleration: 1.05,
-        friction: 0.95,
-        gravity: 1.5,
-        maxExplosions: 5,
-        explosionMinHeight: 0.2,
-        explosionMaxHeight: 0.9,
-        explosionChance: 0.06 
-    });
-    fireworks.start();
-}
